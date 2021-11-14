@@ -20,6 +20,7 @@ BuildRequires:	rpmbuild(macros) >= 1.605
 ExclusiveArch:	aarch64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_noautoprov	libgcc_s.so libstdc\\+\\+.so
 %define		_noautostrip	.*x86_64.*
 
 %description
