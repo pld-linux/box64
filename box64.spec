@@ -1,18 +1,20 @@
 # Conditional build:
+%bcond_with	larch64		# target Loongarch64 device
+%bcond_with	phytium		# target Phytium (D2000 or FT2000/4) device
 %bcond_with	rk3326		# target Rockchip RK3326 device
 %bcond_with	rk3399		# target Rockchip RK3399 device
 %bcond_with	rpi4		# target Raspberry Pi 4
+%bcond_with	sd845		# target Snapragon 845 device
 %bcond_with	tegrax1		# target Tegra X1
 
 Summary:	Linux Userspace x86_64 Emulator
 Name:		box64
-Version:	0.1.4
+Version:	0.1.6
 Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/ptitSeb/box64/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	64d026a02f8e48b802cb321d430684e9
-Patch0:		glibc2.34.patch
+# Source0-md5:	caf23020c1c5e823ac2f2155d82d1d4a
 URL:		https://box86.org
 BuildRequires:	cmake >= 3.4
 BuildRequires:	python3
@@ -29,13 +31,15 @@ Linux systems, like ARM (host system needs to be 64bit little-endian).
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %cmake -B build \
+	%{?with_larch64:-DLARCH64=ON} \
+	%{?with_phytium:-DPHYTIUM=ON} \
 	%{?with_rk3326:-DRK3326=ON} \
 	%{?with_rk3399:-DRK3399=ON} \
 	%{?with_rpi4:-DRPI4ARM64=ON} \
+	%{?with_sd845:-DSD845=ON} \
 	%{?with_tegrax1:-DTEGRAX1=ON}
 %{__make} -C build
 
