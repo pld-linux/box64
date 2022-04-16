@@ -9,12 +9,12 @@
 
 Summary:	Linux Userspace x86_64 Emulator
 Name:		box64
-Version:	0.1.6
+Version:	0.1.8
 Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/ptitSeb/box64/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	caf23020c1c5e823ac2f2155d82d1d4a
+# Source0-md5:	295a8dfb862fe575d3b8fd4e203f1091
 URL:		https://box86.org
 BuildRequires:	cmake >= 3.4
 BuildRequires:	python3
@@ -23,6 +23,7 @@ ExclusiveArch:	aarch64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoprov	libgcc_s.so libstdc\\+\\+.so
+%define		_noautoreqfiles	.*x86_64.*
 %define		_noautostrip	.*x86_64.*
 
 %description
@@ -59,4 +60,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/box64
 %dir /usr/lib/x86_64-linux-gnu
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libpng12.so.0
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libstdc++.so.6
