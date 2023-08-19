@@ -23,7 +23,7 @@ URL:		https://box86.org
 BuildRequires:	cmake >= 3.4
 BuildRequires:	python3
 BuildRequires:	rpmbuild(macros) >= 1.605
-ExclusiveArch:	aarch64
+ExclusiveArch:	aarch64 ppc64le riscv64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoprov	libgcc_s.so libstdc\\+\\+.so
@@ -43,6 +43,12 @@ Linux systems, like ARM (host system needs to be 64bit little-endian).
 	%{?with_lx2160a:-DLX2160A:BOOL=ON} \
 	%{?with_odroidn2:-DODROIDN2:BOOL=ON} \
 	%{?with_phytium:-DPHYTIUM:BOOL=ON} \
+%ifarch ppc64le
+	-DPPC64LE:BOOL=ON \
+%endif
+%ifarch riscv64
+	-DRV64:BOOL=ON \
+%endif
 	%{?with_rk3326:-DRK3326:BOOL=ON} \
 	%{?with_rk3399:-DRK3399:BOOL=ON} \
 	%{?with_rk3588:-DRK3588:BOOL=ON} \
