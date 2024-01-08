@@ -18,11 +18,12 @@
 Summary:	Linux Userspace x86_64 Emulator
 Name:		box64
 Version:	0.2.6
-Release:	1
+Release:	2
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/ptitSeb/box64/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	12a691bad57bb0806a6e06c23c71121a
+Patch0:		getopt-regression.patch
 URL:		https://box86.org
 BuildRequires:	cmake >= 3.4
 BuildRequires:	python3
@@ -40,6 +41,7 @@ Linux systems, like ARM (host system needs to be 64bit little-endian).
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %cmake -B build \
