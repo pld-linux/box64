@@ -13,25 +13,26 @@
 %bcond_with	sd845		# target Snapragon 845 device
 %bcond_with	sd888		# target Snapragon 888 device
 %bcond_with	sd8g2		# target Snapragon 8 Gen 2 device
+%bcond_with	tegra_t194	# target Tegra Xavier device
+%bcond_with	tegra_t234	# target Tegra Orin device
 %bcond_with	tegrax1		# target Tegra X1
 
 Summary:	Linux Userspace x86_64 Emulator
 Name:		box64
-Version:	0.2.6
-Release:	2
+Version:	0.2.8
+Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/ptitSeb/box64/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	12a691bad57bb0806a6e06c23c71121a
-Patch0:		getopt-regression.patch
+# Source0-md5:	6975d0307121bce5868ef6f74be6b3eb
 URL:		https://box86.org
-BuildRequires:	cmake >= 3.4
+BuildRequires:	cmake >= 3.13
 BuildRequires:	python3
 BuildRequires:	rpmbuild(macros) >= 1.605
 ExclusiveArch:	aarch64 ppc64le riscv64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoprov	libcrypto.so libgcc_s.so libssl.so libstdc\\+\\+.so libpng12.so libunwind.so
+%define		_noautoprov	libcrypto.so libgcc_s.so libmbed.*\\.so libssl.so libstdc\\+\\+.so libpng12.so libunwind.so
 %define		_noautoreqfiles	.*x86_64.*
 %define		_noautostrip	.*x86_64.*
 
@@ -41,7 +42,6 @@ Linux systems, like ARM (host system needs to be 64bit little-endian).
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %cmake -B build \
@@ -68,6 +68,8 @@ Linux systems, like ARM (host system needs to be 64bit little-endian).
 	%{?with_sd845:-DSD845:BOOL=ON} \
 	%{?with_sd888:-DSD888:BOOL=ON} \
 	%{?with_sd8g2:-DSD8G2:BOOL=ON} \
+	%{?with_tegra_t194:-DTEGRA_T194:BOOL=ON} \
+	%{?with_tegra_t234:-DTEGRA_T234:BOOL=ON} \
 	%{?with_tegrax1:-DTEGRAX1:BOOL=ON}
 %{__make} -C build
 
@@ -89,6 +91,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/lib/x86_64-linux-gnu
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedcrypto.so.3
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedcrypto.so.7
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedtls.so.12
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedtls.so.14
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedx509.so.0
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedx509.so.1
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libpng12.so.0
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libssl.so.1.1
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libstdc++.so.5
