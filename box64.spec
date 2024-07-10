@@ -19,12 +19,12 @@
 
 Summary:	Linux Userspace x86_64 Emulator
 Name:		box64
-Version:	0.2.8
+Version:	0.3.0
 Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/ptitSeb/box64/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	6975d0307121bce5868ef6f74be6b3eb
+# Source0-md5:	408ee0d22fb796b25b417759719a840e
 URL:		https://box86.org
 BuildRequires:	cmake >= 3.13
 BuildRequires:	python3
@@ -89,6 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/box64.box64rc
 %attr(755,root,root) %{_bindir}/box64
 %dir /usr/lib/x86_64-linux-gnu
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.0
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedcrypto.so.3
@@ -98,6 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedx509.so.0
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedx509.so.1
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libpng12.so.0
+%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libssl.so.1.0.0
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libssl.so.1.1
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libstdc++.so.5
 %attr(755,root,root) /usr/lib/x86_64-linux-gnu/libstdc++.so.6
