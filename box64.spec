@@ -11,20 +11,22 @@
 %bcond_with	rpi4		# target Raspberry Pi 4
 %bcond_with	rpi5		# target Raspberry Pi 5
 %bcond_with	sd845		# target Snapragon 845 device
+%bcond_with	sd865		# target Snapragon 865 device
 %bcond_with	sd888		# target Snapragon 888 device
 %bcond_with	sd8g2		# target Snapragon 8 Gen 2 device
+%bcond_with	sdoryon1	# target Snapragon Oryon 1 (X1E80100/X1E78100) device
 %bcond_with	tegra_t194	# target Tegra Xavier device
 %bcond_with	tegra_t234	# target Tegra Orin device
 %bcond_with	tegrax1		# target Tegra X1
 
 Summary:	Linux Userspace x86_64 Emulator
 Name:		box64
-Version:	0.3.0
+Version:	0.3.2
 Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/ptitSeb/box64/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	408ee0d22fb796b25b417759719a840e
+# Source0-md5:	4ef9eb42caf8e1f2459830b00924cafc
 URL:		https://box86.org
 BuildRequires:	cmake >= 3.13
 BuildRequires:	python3
@@ -34,7 +36,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoprov	libcrypto.so libgcc_s.so libmbed.*\\.so libssl.so libstdc\\+\\+.so libpng12.so libunwind.so
 %define		_noautoreqfiles	.*x86_64.*
-%define		_noautostrip	.*x86_64.*
+%define		_noautostrip	.*x86_64.*\\|.*/box64-bash
 
 %description
 Box64 lets you run x86_64 Linux programs (such as games) on non-x86_64
@@ -66,8 +68,10 @@ Linux systems, like ARM (host system needs to be 64bit little-endian).
 	%{?with_rpi4:-DRPI4ARM64:BOOL=ON} \
 	%{?with_rpi5:-DRPI5ARM64:BOOL=ON} \
 	%{?with_sd845:-DSD845:BOOL=ON} \
+	%{?with_sd865:-DSD865:BOOL=ON} \
 	%{?with_sd888:-DSD888:BOOL=ON} \
 	%{?with_sd8g2:-DSD8G2:BOOL=ON} \
+	%{?with_sdoryon1:-DSDORYON1:BOOL=ON} \
 	%{?with_tegra_t194:-DTEGRA_T194:BOOL=ON} \
 	%{?with_tegra_t234:-DTEGRA_T234:BOOL=ON} \
 	%{?with_tegrax1:-DTEGRAX1:BOOL=ON}
@@ -88,19 +92,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/binfmt.d/box64.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/box64.box64rc
 %attr(755,root,root) %{_bindir}/box64
-%dir /usr/lib/x86_64-linux-gnu
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.0
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedcrypto.so.3
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedcrypto.so.7
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedtls.so.12
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedtls.so.14
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedx509.so.0
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libmbedx509.so.1
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libpng12.so.0
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libssl.so.1.0.0
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libssl.so.1.1
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libstdc++.so.5
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libstdc++.so.6
-%attr(755,root,root) /usr/lib/x86_64-linux-gnu/libunwind.so.8
+%attr(755,root,root) %{_bindir}/box64-bash
+%dir /usr/lib/box64-x86_64-linux-gnu
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libcrypto.so.1.0.0
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libcrypto.so.1.1
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libgcc_s.so.1
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libmbedcrypto.so.3
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libmbedcrypto.so.7
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libmbedtls.so.12
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libmbedtls.so.14
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libmbedx509.so.0
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libmbedx509.so.1
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libpng12.so.0
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libssl.so.1.0.0
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libssl.so.1.1
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libstdc++.so.5
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libstdc++.so.6
+%attr(755,root,root) /usr/lib/box64-x86_64-linux-gnu/libunwind.so.8
