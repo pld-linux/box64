@@ -35,7 +35,7 @@ ExclusiveArch:	aarch64 ppc64le riscv64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoprov	libcrypto.so libgcc_s.so libmbed.*\\.so libssl.so libstdc\\+\\+.so libpng12.so libunwind.so
-%define		_noautoreqfiles	.*x86_64.*
+%define		_noautoreqfiles	.*x86_64.* .*/box64-bash
 %define		_noautostrip	.*x86_64.*\\|.*/box64-bash
 
 %description
