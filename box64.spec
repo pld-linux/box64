@@ -21,12 +21,12 @@
 
 Summary:	Linux Userspace x86_64 Emulator
 Name:		box64
-Version:	0.3.2
+Version:	0.3.4
 Release:	1
 License:	MIT
 Group:		Applications
 Source0:	https://github.com/ptitSeb/box64/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	4ef9eb42caf8e1f2459830b00924cafc
+# Source0-md5:	01e85d86a03150ada8785c2dc9e3c15c
 URL:		https://box86.org
 BuildRequires:	cmake >= 3.13
 BuildRequires:	python3
